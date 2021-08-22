@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "truffle": "^5.4.7",
+    "web3": "^1.5.2"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.1.0",
@@ -16,6 +18,7 @@
     "@snowpack/plugin-typescript": "^1.2.1",
     "@snowpack/web-test-runner-plugin": "^0.2.2",
     "@testing-library/react": "^11.2.6",
+    "@typechain/truffle-v5": "^5.0.0",
     "@types/chai": "^4.2.17",
     "@types/mocha": "^8.2.2",
     "@types/react": "^17.0.4",
@@ -25,6 +28,7 @@
     "chai": "^4.3.4",
     "prettier": "^2.2.1",
     "snowpack": "^3.3.7",
+    "typechain": "^5.1.2",
     "typescript": "^4.2.4"
   }
 }
