@@ -109,5 +109,17 @@ contract('TokenFarm', ([owner, investor])=>{
     it(`Should only issue token from the owner`, async()=> {
       await tokenFarm.issueTokens({from: investor}).should.be.rejected;
     })
+
+    it(`Should check the staking state after unstaking dai tokens`, async()=> {
+      await tokenFarm.unstakeTokens({from: investor});
+      const balance = await daiToken.balanceOf(investor);
+      assert.equal(balance.toString(), exchangeTokens('100'), 'Investor should get the staked dai tokens back to their wallet after unstaking it');
+
+      const isStaking = await tokenFarm.isStaking(investor);
+      assert.equal(isStaking, false, 'Investor should not be staking after unstaking');
+      
+      const stakingBalance = await tokenFarm.stakingBalance(investor);
+      assert.equal(stakingBalance.toString(), exchangeTokens('0'), 'Investor should not have any staked dai tokens after unstaking')
+    })
   })
 })
