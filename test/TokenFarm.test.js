@@ -1,3 +1,5 @@
+const { assert } = require("chai");
+
 const TokenFarm = artifacts.require("TokenFarm");
 const DaiToken = artifacts.require("DaiToken");
 const DappToken = artifacts.require("DappToken");
@@ -50,4 +52,45 @@ contract('TokenFarm', ([owner, investor])=>{
       assert.equal(balance.toString(), exchangeTokens('1000000'));
     })
   })
+
+  describe('Farms tokens', () => {
+    it('Should check if investor have correct dai token balance before staking', async ()=> {
+      // Check the balance of the investor before staking dai token in token farm
+      const result = await daiToken.balanceOf(investor);
+      assert.equal(result.toString(), exchangeTokens('100'), 'Incorrect investor mock dai balance before staking in Token Farm');
+    })
+
+    it('Should check if investor have correct dai token balance after staking', async()=> {
+      // Approve that token farm can stake 100 dai tokens from investors address
+      await daiToken.approve(tokenFarm.address, exchangeTokens('100'), {from: investor});
+      // Stake investors mock dai tokens
+      await tokenFarm.stakeTokens(exchangeTokens('100'), {from: investor});
+  
+      // Check the balance of the investor after staking dai token
+      const result = await daiToken.balanceOf(investor);
+      assert.equal(result.toString(), exchangeTokens('0'), 'Incorrect investor mock dai balance after staking in Token Farm');
+    })
+
+    it('Should check if investor have correct daiToken balance after investor has staked', async()=> {
+      // Token farm should have 100 dai token after investor has staked it
+      const result = await daiToken.balanceOf(tokenFarm.address);
+      assert.equal(result.toString(), exchangeTokens('100'), 'Incorrect token farm mock dai balance after investor staked')
+    })
+
+    it(`Should check the staking states of TokenFarm after investor has staked`, async ()=> {
+      let result;
+      // Token farm stakingBalance hashmap should contain correct staked dai token value for the investor
+      result = await tokenFarm.stakingBalance(investor);
+      assert.equal(result.toString(), exchangeTokens('100'), 'Incorrect staked balance of investor in token farm stakingBalance hashmap');
+  
+      // Check to see if the investor is in the hasStacked hashmap after staking dai token
+      result = await tokenFarm.hasStaked(investor);
+      assert.equal(result.toString(), 'true', "Investor hasn't been added in the hasStacked hashmap");
+  
+      // Check to see if the current investor is currently staking
+      result = await tokenFarm.isStaking(investor);
+      assert.equal(result.toString(), 'true', 'Investor staked status is incorrect')
+    })
+  })
+  
 })
