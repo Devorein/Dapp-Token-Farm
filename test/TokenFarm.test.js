@@ -115,6 +115,8 @@ contract('TokenFarm', ([owner, investor])=>{
       const balance = await daiToken.balanceOf(investor);
       assert.equal(balance.toString(), exchangeTokens('100'), 'Investor should get the staked dai tokens back to their wallet after unstaking it');
 
+      assert.equal((await daiToken.balanceOf(tokenFarm.address)).toString(), exchangeTokens('0'), 'Investor should get the staked dai tokens back to their wallet after unstaking it');
+
       const isStaking = await tokenFarm.isStaking(investor);
       assert.equal(isStaking, false, 'Investor should not be staking after unstaking');
       
