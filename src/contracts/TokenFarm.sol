@@ -63,4 +63,20 @@ contract TokenFarm {
             }
         }
     }
+
+    // Unstake staked dai tokens of an investor
+    function unstakeTokens() public {
+        uint256 balance = stakingBalance[msg.sender];
+
+        require(balance > 0, "Can't unstake balance that is less than 0");
+
+        // Transfer the daitokens to the investors wallet
+        daiToken.transfer(msg.sender, balance);
+
+        // Update the current staking state of the investor
+        isStaking[msg.sender] = false;
+
+        // Update the current stacking amount of the investor
+        stakingBalance[msg.sender] = 0;
+    }
 }
