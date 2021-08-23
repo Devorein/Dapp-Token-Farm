@@ -60,6 +60,13 @@ contract('TokenFarm', ([owner, investor])=>{
       assert.equal(result.toString(), exchangeTokens('100'), 'Incorrect investor mock dai balance before staking in Token Farm');
     })
 
+    it('Should not stake 0 dai tokens', async()=> {
+      // Approve that token farm can stake 100 dai tokens from investors address
+      await daiToken.approve(tokenFarm.address, exchangeTokens('100'), {from: investor});
+      // Stake investors mock dai tokens
+      await tokenFarm.stakeTokens(exchangeTokens('0'), {from: investor}).should.be.rejected;
+    })
+
     it('Should check if investor have correct dai token balance after staking', async()=> {
       // Approve that token farm can stake 100 dai tokens from investors address
       await daiToken.approve(tokenFarm.address, exchangeTokens('100'), {from: investor});
@@ -91,6 +98,16 @@ contract('TokenFarm', ([owner, investor])=>{
       result = await tokenFarm.isStaking(investor);
       assert.equal(result.toString(), 'true', 'Investor staked status is incorrect')
     })
-  })
+
+    it(`Should issue dapp tokens to investors`, async()=> {
+      await tokenFarm.issueTokens({from: owner});
   
+      const balance = await dappToken.balanceOf(investor);
+      assert.equal(balance.toString(), exchangeTokens('100'), 'Investor should have correct dapp token after issuing')
+    })
+
+    it(`Should only issue token from the owner`, async()=> {
+      await tokenFarm.issueTokens({from: investor}).should.be.rejected;
+    })
+  })
 })
