@@ -1,11 +1,9 @@
-interface NavbarProps {
-  account: string
-}
+import React, { useContext } from "react";
+import { RootContext } from "../contexts";
 
-export function Navbar(props: NavbarProps) {
-  const { account } = props;
-
+export function Navbar() {
+  const { accounts } = useContext(RootContext);
   return <div className="Navbar">
-    {account}
+    {accounts[0]}
   </div>
 }
