@@ -51,6 +51,8 @@ function App() {
     loadWeb3();
   }, [])
 
+  console.log(state)
+
   return (
     <RootContext.Provider value={state}>
       <div className="App">

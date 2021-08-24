@@ -1,6 +1,6 @@
-const TokenFarm = artifacts.require("TokenFarm");
-const DaiToken = artifacts.require("DaiToken");
-const DappToken = artifacts.require("DappToken");
+const TokenFarm = (global.artifacts as Truffle.Artifacts).require("TokenFarm");
+const DaiToken = (global.artifacts as Truffle.Artifacts).require("DaiToken");
+const DappToken = (global.artifacts as Truffle.Artifacts).require("DappToken");
 
 module.exports = async function(deployer, network, accounts) {
   await deployer.deploy(DaiToken);

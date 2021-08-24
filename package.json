@@ -30,9 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "migrate": "npx truffle migrate --reset",
+    "migrate": "npx tsc --project ./migrations/tsconfig.json && npx truffle migrate --reset",
     "issue-tokens": "npx truffle exec scripts/issue-tokens.js",
-    "types:abis": "npx typechain --target=web3-v1 './src/abis/*.json'"
+    "types:abis": "npx typechain --target=web3-v1 './src/abis/*.json'",
   },
   "eslintConfig": {
     "extends": [
