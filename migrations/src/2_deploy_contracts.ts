@@ -1,10 +1,10 @@
 import "../../types/truffle-contracts/types";
 
-const TokenFarm = (global.artifacts as Truffle.Artifacts).require("TokenFarm");
-const DaiToken = (global.artifacts as Truffle.Artifacts).require("DaiToken");
-const DappToken = (global.artifacts as Truffle.Artifacts).require("DappToken");
+const TokenFarm = artifacts.require("TokenFarm");
+const DaiToken = artifacts.require("DaiToken");
+const DappToken = artifacts.require("DappToken");
 
-module.exports = async function(deployer, network, accounts) {
+module.exports = async function(deployer, _, accounts) {
   deployer.deploy(DaiToken);
   const daiToken = await DaiToken.deployed();
 

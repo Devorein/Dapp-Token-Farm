@@ -1,11 +1,10 @@
-import { assert } from "chai";
 import Web3 from "web3";
 import { DaiTokenInstance, DappTokenInstance, TokenFarmInstance } from "../types/truffle-contracts/index";
 import "../types/truffle-contracts/types";
 
-const TokenFarm = ((global as any).artifacts as Truffle.Artifacts).require("TokenFarm");
-const DaiToken = ((global as any).artifacts as Truffle.Artifacts).require("DaiToken");
-const DappToken = ((global as any).artifacts as Truffle.Artifacts).require("DappToken");
+const TokenFarm = artifacts.require("TokenFarm");
+const DaiToken = artifacts.require("DaiToken");
+const DappToken = artifacts.require("DappToken");
 
 require("chai")
   .use(require("chai-as-promised"))
@@ -18,7 +17,7 @@ function exchangeTokens(token: string){
 contract('TokenFarm', ([owner, investor])=>{
   let daiToken: DaiTokenInstance | null = null, dappToken: DappTokenInstance | null = null, tokenFarm: TokenFarmInstance | null = null;
 
-  before(async ()=> {
+  beforeEach(async ()=> {
     daiToken = await DaiToken.new();
     dappToken = await DappToken.new();
     tokenFarm = await TokenFarm.new(daiToken.address, dappToken.address);
@@ -110,7 +109,7 @@ contract('TokenFarm', ([owner, investor])=>{
     })
 
     it(`Should only issue token from the owner`, async()=> {
-      await tokenFarm.issueTokens({from: investor}).should.be.rejected;
+      expect(await tokenFarm.issueTokens({from: investor}))
     })
 
     it(`Should check the staking state after unstaking dai tokens`, async()=> {
