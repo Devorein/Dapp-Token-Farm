@@ -2,8 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import { DaiTokenContract } from "./DaiToken";
+import { DappTokenContract } from "./DappToken";
+import { MigrationsContract } from "./Migrations";
+import { TokenFarmContract } from "./TokenFarm";
+
 declare global {
   namespace Truffle {
-    interface Artifacts {}
+    interface Artifacts {
+      require(name: "DaiToken"): DaiTokenContract;
+      require(name: "DappToken"): DappTokenContract;
+      require(name: "Migrations"): MigrationsContract;
+      require(name: "TokenFarm"): TokenFarmContract;
+    }
   }
 }
+
+export { DaiTokenContract, DaiTokenInstance } from "./DaiToken";
+export { DappTokenContract, DappTokenInstance } from "./DappToken";
+export { MigrationsContract, MigrationsInstance } from "./Migrations";
+export { TokenFarmContract, TokenFarmInstance } from "./TokenFarm";

@@ -1,19 +1,22 @@
-const { assert } = require("chai");
+import { assert } from "chai";
+import Web3 from "web3";
+import { DaiTokenInstance, DappTokenInstance, TokenFarmInstance } from "../types/truffle-contracts/index";
+import "../types/truffle-contracts/types";
 
-const TokenFarm = artifacts.require("TokenFarm");
-const DaiToken = artifacts.require("DaiToken");
-const DappToken = artifacts.require("DappToken");
+const TokenFarm = ((global as any).artifacts as Truffle.Artifacts).require("TokenFarm");
+const DaiToken = ((global as any).artifacts as Truffle.Artifacts).require("DaiToken");
+const DappToken = ((global as any).artifacts as Truffle.Artifacts).require("DappToken");
 
 require("chai")
   .use(require("chai-as-promised"))
   .should()
 
-function exchangeTokens(token){
-  return web3.utils.toWei(token, 'Ether');
+function exchangeTokens(token: string){
+  return Web3.utils.toWei(token, 'ether');
 }
 
 contract('TokenFarm', ([owner, investor])=>{
-  let daiToken, dappToken, tokenFarm;
+  let daiToken: DaiTokenInstance | null = null, dappToken: DappTokenInstance | null = null, tokenFarm: TokenFarmInstance | null = null;
 
   before(async ()=> {
     daiToken = await DaiToken.new();
